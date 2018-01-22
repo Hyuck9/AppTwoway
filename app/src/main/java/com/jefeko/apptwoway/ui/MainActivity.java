@@ -1,22 +1,39 @@
-package com.jefeko.apptwoway;
+package com.jefeko.apptwoway.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.jefeko.apptwoway.R;
+import com.jefeko.apptwoway.ui.basic.BasicManageActivity;
+import com.jefeko.apptwoway.ui.obtainorder.ObtainOrderManageActivity;
+import com.jefeko.apptwoway.ui.order.OrderManageActivity;
+import com.jefeko.apptwoway.ui.waytalk.WayTalkActivity;
 import com.jefeko.apptwoway.utils.BackPressCloseUtil;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    @BindView(R.id.card_view_obtain_order)
+    CardView btn_obtain_order;
+    @BindView(R.id.card_view_order)
+    CardView btn_order;
+    @BindView(R.id.card_view_talk)
+    CardView btn_talk;
+    @BindView(R.id.card_view_basic)
+    CardView btn_basic;
 
     private BackPressCloseUtil mBackPressUtil;
 
@@ -24,19 +41,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         initialize();
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -53,6 +62,34 @@ public class MainActivity extends AppCompatActivity
      */
     private void initialize() {
         mBackPressUtil = new BackPressCloseUtil(this);
+    }
+
+    /**
+     * click event
+     * @param v
+     */
+    public void mOnClick(View v) {
+        switch (v.getId()) {
+            case R.id.card_view_obtain_order:
+                openActivity(ObtainOrderManageActivity.class);
+                break;
+            case R.id.card_view_order:
+                openActivity(OrderManageActivity.class);
+                break;
+            case R.id.card_view_talk:
+                openActivity(WayTalkActivity.class);
+                break;
+            case R.id.card_view_basic:
+                openActivity(BasicManageActivity.class);
+                break;
+        }
+    }
+
+    /**
+     * Activity open
+     * */
+    private void openActivity(Class<?> activity) {
+        startActivity(new Intent(this, activity));
     }
 
     @Override
